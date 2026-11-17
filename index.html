@@ -28,8 +28,8 @@ if(!matchMedia('(prefers-reduced-motion: reduce)').matches&&new URLSearchParams(
 <link rel="preload" href="fonts/epilogue-latin-900-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="fonts/figtree-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="css/fuentes.css?v=2">
-<link rel="stylesheet" href="kit/kit.css?v=3">
-<link rel="stylesheet" href="css/tibuk.css?v=3">
+<link rel="stylesheet" href="kit/kit.css?v=4">
+<link rel="stylesheet" href="css/tibuk.css?v=4">
 </head>
 <body>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
@@ -53,7 +53,7 @@ if(!matchMedia('(prefers-reduced-motion: reduce)').matches&&new URLSearchParams(
 </svg></span></a>
   <div class="nav-der">
     <nav class="nav-links" aria-label="Secciones">
-      <a href="#casona">La casona</a><a href="#carta">La carta</a><a href="#catas">Catas</a><a href="#llegar">Cómo llegar</a>
+      <a href="#casona">La casona</a><a href="#carta">La carta</a><a href="#catas">Catas</a><a href="#llegar">Cómo llegar</a><a class="nav-panel" href="admin/" target="_blank" rel="noopener">Panel del dueño ↗</a>
     </nav>
     <button class="nav-menu" type="button" aria-label="Abrir menú" aria-expanded="false" aria-controls="menu"><span>Menú</span><i></i></button>
     <button class="chapa chapa--chica" type="button" data-kit-open="reservas">Reservar</button>
@@ -182,8 +182,8 @@ if(!matchMedia('(prefers-reduced-motion: reduce)').matches&&new URLSearchParams(
         <div class="pz-cuerpo">
           <p class="pz-kicker" data-pz="kicker">Bienvenidos</p>
           <h3 class="pz-tit" data-pz="tit">Boulevard Sáenz Peña 1400</h3>
-          <p class="pz-txt" data-pz="txt">La casa verde de la esquina. Elegí por dónde entrar: la vereda, el salón, la cocina, el horno o la cava.</p>
-          <p class="pz-dato" data-pz="dato">Lun 10:00 a 23:30 hs · Mié a sáb 10:00 a 00:00 hs</p>
+          <p class="pz-txt" data-pz="txt">La casa verde de la esquina. Tocá la vereda, una ventana, la puerta, la chimenea o la cava para entrar.</p>
+          <p class="pz-dato" data-pz="dato">Lun 10:00 a 23:30 · Mié a sáb 10:00 a 00:00 · Dom 10:00 a 17:00 hs · Mar cerrado</p>
           <div class="pz-cta" data-pz="cta"><button class="chapa chapa--cal" type="button" data-ir="vereda">Empezar por la vereda</button></div>
         </div>
       </div>
@@ -203,7 +203,7 @@ if(!matchMedia('(prefers-reduced-motion: reduce)').matches&&new URLSearchParams(
     <div class="tablero rv">
       <div class="tablero__marco">
         <div class="tablero__carta" data-kit="carta" data-kit-pedir="false" data-kit-categorias="entradas,principales,ensaladas,postres,mediodia"></div>
-        <figure class="tablero__foto on" aria-hidden="true"><img data-foto-plato src="img/plato-langostinos.webp" alt="" width="700" height="467" loading="lazy"><figcaption data-foto-cap>Langostinos crocantes</figcaption><p class="tablero__ayuda">Los platos con punto verde tienen foto: pasá el mouse.</p></figure>
+        <div class="tablero__lado" aria-live="polite"><figure class="tablero__foto" aria-hidden="true"><img data-foto-plato alt="" width="700" height="700" loading="lazy"><figcaption data-foto-cap></figcaption><p class="tablero__ayuda">Los platos con punto verde tienen foto: pasá el mouse.</p></figure><div class="tablero__nota" data-nota><p class="tablero__nota-k" data-nota-k>Entradas</p><p class="tablero__nota-t" data-nota-t>Para el centro de la mesa</p><p class="tablero__nota-s" data-nota-s>Ocho entradas, de la fainá a las mollejas Tibuk.</p></div></div>
       </div>
       <div class="tablero__pie">
         <p>Cubierto $4.200 · 10% off en efectivo (no aplica al mediodía) · Compartir +20%</p>
@@ -313,9 +313,9 @@ if(!matchMedia('(prefers-reduced-motion: reduce)').matches&&new URLSearchParams(
   </div>
 </footer>
 
-<script type="module" src="js/tibuk.js?v=3"></script>
+<script type="module" src="js/tibuk.js?v=4"></script>
 <script type="module">
-  import { initKit } from './kit/kit.js?v=3';
+  import { initKit } from './kit/kit.js?v=4';
   window.kit = await initKit({
     config: 'cliente.json', imagenes: { lqip: 'img/lqip.json' },
     carta: { pedir: false, template: (p, c) => window.tibukItem ? window.tibukItem(p, c) : '' },

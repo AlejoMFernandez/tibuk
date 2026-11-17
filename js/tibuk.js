@@ -136,7 +136,7 @@ intro();
 
 // ---------- WOW: la casona ----------
 const PARTES = {
-  vereda: { foto: 'img/pz-vereda.webp', kicker: 'La veredita', tit: 'La más linda del boulevard', txt: 'Sombrillas rojas, la casa verde de fondo y la mesa al sol. Se llena seguido: mejor reservar.', dato: 'Todos los días desde las 10:00 hs · Martes cerrado', cta: ['Reservar en la vereda', 'reserva', 'vereda'] },
+  vereda: { foto: 'img/pz-vereda.webp', kicker: 'La veredita', tit: 'La más linda del boulevard', txt: 'Sombrillas rojas, la casa verde de fondo y la mesa al sol. Se llena seguido: mejor reservar.', dato: 'Lun y mié a dom desde las 10:00 hs · Martes cerrado', cta: ['Reservar en la vereda', 'reserva', 'vereda'] },
   salon: { foto: 'img/pz-salon.webp', kicker: 'El salón', tit: 'Ladrillo, cuadros y luz baja', txt: 'Mesas de madera, lámparas de cobre y los cuadros de la casa. Para la cena de todos los días o el festejo de fin de año.', dato: 'Cubierto $4.200 · 10% off en efectivo', cta: ['Reservar en el salón', 'reserva', 'salon'] },
   cocina: { foto: 'img/pz-cocina.webp', kicker: 'La cocina de Julián', tit: 'Pan casero y cocina de autor', txt: 'Julián Tiberio, chef y dueño, ganó el Tigre de Oro. Firma las mollejas Tibuk, el rösti de salmón y la carrillera.', dato: 'Rösti de salmón $44.000 · Mollejas $35.000', cta: ['Ver la pizarra del chef', 'carta'] },
   horno: { foto: 'img/pz-horno.webp', kicker: 'El horno de barro', tit: 'Lo que sale del barro', txt: 'El Pollo Tibuk con adobo marroquí y las frutas quemadas con helado se hacen en el horno de barro del fondo.', dato: 'Pollo Tibuk $29.000 · Frutas quemadas $19.000', cta: ['Ver la pizarra del chef', 'carta'] },
@@ -244,17 +244,27 @@ function pintarAgenda(lista) {
     const [y, m, d] = ev.fecha.split('-').map(Number); const dia = new Date(y, m - 1, d).getDay();
     const precio = ev.precio != null ? ` · ${window.kit?.money ? window.kit.money(ev.precio) : '$' + ev.precio.toLocaleString('es-AR')} por persona` : '';
     return `<li class="ev"><div class="ev__fecha"><span class="ev__dia">${d}</span><span class="ev__mes">${MESES[m - 1]}</span></div>
-      <div class="ev__info"><p class="ev__tipo">${escH(TIPOS[ev.tipo] || 'Evento')}</p><h3 class="ev__nom">${escH(ev.nombre)}</h3><p class="ev__dato">${DIAS[dia]} · ${ev.hora} hs · Cupo ${ev.cupo}${precio}</p></div>
-      ${ev.reserva ? `<button class="ev__btn" type="button" data-ev-fecha="${ev.fecha}" data-ev-hora="${ev.hora}">Anotarme</button>` : ''}</li>`;
+      <div class="ev__info"><p class="ev__tipo">${escH(TIPOS[ev.tipo] || 'Evento')}</p><h3 class="ev__nom">${escH(ev.nombre)}</h3><p class="ev__dato">${DIAS[dia]} · ${ev.hora} hs${precio} · <span data-quedan="${ev.id}">Cupo ${ev.cupo}</span></p></div>
+      ${ev.reserva ? `<button class="ev__btn" type="button" data-ev-id="${ev.id}">Anotarme</button>` : ''}</li>`;
   }).join('');
+  cupos(evs);
 }
+async function cupos(evs) {
+  if (!window.kit?.reservas?.turnos) return;
+  for (const ev of evs) {
+    try {
+      const ts = await window.kit.reservas.turnos(ev.fecha, 1);
+      const t = ts.find(x => x.servicio === 'ev-' + ev.id && x.hora === ev.hora); const s = document.querySelector(`[data-quedan="${ev.id}"]`);
+      if (t && s) s.textContent = t.disponible ? (t.libres < ev.cupo ? `Quedan ${t.libres} lugares` : `Cupo ${ev.cupo}`) : 'Sin lugares';
+    } catch (e) {}
+  }
+}
+document.addEventListener('kit:reserva', () => { if (window.kit?.eventos) setTimeout(() => cupos(window.kit.eventos.proximos().slice(0, 4)), 200); });
 document.addEventListener('kit:eventos', (e) => pintarAgenda(e.detail.proximos));
 document.addEventListener('tibuk:kit', () => { if (window.kit?.eventos) pintarAgenda(window.kit.eventos.proximos()); });
 document.addEventListener('click', (e) => {
-  const b = e.target.closest('[data-ev-fecha]'); if (!b || !window.kit?.reservas) return;
-  window.kit.reservas.abrir({ fecha: b.dataset.evFecha, hora: b.dataset.evHora, personas: 2 });
-  const nom = b.closest('.ev')?.querySelector('.ev__nom')?.textContent;
-  if (nom) setTimeout(() => { const pop = document.querySelector('.kit-pop.is-open'); const tt = pop?.querySelector('.kit-pop__title'); if (tt) { tt.textContent = 'Anotate: ' + nom; pop.setAttribute('aria-label', tt.textContent); } }, 30);
+  const b = e.target.closest('[data-ev-id]'); if (!b || !window.kit?.reservas) return;
+  window.kit.reservas.abrir({ evento: b.dataset.evId, personas: 2 });
 });
 
 // ---------- hojas en la foto del equipo y en el pie ----------
@@ -286,26 +296,34 @@ $$('[data-hojas="foto"], [data-hojas="foto2"], [data-hojas="pie"]').forEach(c =>
   const io = new IntersectionObserver(es => { es.forEach(e => e.isIntersecting ? vis.add(e.target) : vis.delete(e.target)); html.classList.toggle('sin-pill', vis.size > 0); }, { threshold: .12 });
   [$('.ha'), $('.pie'), celu() ? $('.casona') : null].filter(Boolean).forEach(x => io.observe(x));
 })();
-document.addEventListener('click', (e) => {
-  if (!e.target.closest('[data-kit-open="reservas"]')) return;
-  setTimeout(() => { const pop = document.querySelector('.kit-pop.is-open'); pop?.classList.remove('es-evento'); const tt = pop?.querySelector('.kit-pop__title'); if (tt && tt.textContent.startsWith('Anotate')) { tt.textContent = 'Reservá tu mesa en la casona'; pop.setAttribute('aria-label', tt.textContent); } }, 30);
-});
 
-// ---------- pizarra: la foto acompaña a la pestaña ----------
-const FOTO_TAB = { entradas: 'langostinos-crocantes', principales: 'bondiola-braseada', postres: 'volcan-de-chocolate' };
-function fotoDeTab(cat) {
-  if (!tabFoto || innerWidth < 900) return;
+
+// ---------- pizarra: el costado acompaña a la pestaña (foto del plato o nota de tiza) ----------
+const NOTAS = {
+  entradas: ['Entradas', 'Para el centro de la mesa', 'Ocho entradas, de la fainá a las mollejas Tibuk, que son de la casa.'],
+  ensaladas: ['Ensaladas', 'Las ensaladas de la casa', 'Cuatro ensaladas para pedir solas o compartir (compartir un plato suma un 20%).'],
+  mediodia: ['Al mediodía', 'Menú ejecutivo $24.000', 'Pesca del día, ñoquis de espinaca, milanesa de pollo o ensalada, y postre.'],
+};
+const lado = $('.tablero__lado'), nota = $('[data-nota]');
+function ladoDeTab(cat) {
+  if (!lado) return;
   const it = cat && document.querySelector(`.tablero .kit-item[data-cat="${cat}"][data-photo]`);
-  const src = it ? it.dataset.photo : 'img/pz-cocina.webp';
-  const cap = it ? $('.pl__nom', it).textContent : 'La panera de la casa';
-  fotoId = it ? it.dataset.id : null;
-  tabFoto.classList.remove('on');
-  const pre = new Image(); pre.onload = () => { tabImg.src = src; tabCap.textContent = cap; tabFoto.classList.add('on'); }; pre.src = src;
+  if (it) {
+    nota.hidden = true; tabFoto.hidden = false; fotoId = it.dataset.id; tabFoto.classList.remove('on');
+    const src = it.dataset.photo, cap = $('.pl__nom', it).textContent;
+    const pre = new Image(); pre.onload = () => { tabImg.src = src; tabCap.textContent = cap; tabFoto.classList.add('on'); }; pre.src = src;
+  } else {
+    const n = NOTAS[cat] || [document.querySelector(`.tablero .kit-tab[data-cat="${cat}"]`)?.textContent || '', 'De la pizarra', ''];
+    fotoId = null; tabFoto.hidden = true; nota.hidden = false;
+    $('[data-nota-k]').textContent = n[0]; $('[data-nota-t]').textContent = n[1]; $('[data-nota-s]').textContent = n[2];
+    nota.classList.remove('entra'); void nota.offsetWidth; nota.classList.add('entra');
+  }
 }
-document.addEventListener('click', (e) => { const t = e.target.closest('.tablero .kit-tab'); if (t) fotoDeTab(t.dataset.cat); });
+document.addEventListener('click', (e) => { const t = e.target.closest('.tablero .kit-tab'); if (t) ladoDeTab(t.dataset.cat); });
+document.addEventListener('kit:carta', (e) => { if (e.detail.el?.closest('.tablero')) requestAnimationFrame(() => ladoDeTab($('.tablero .kit-tab.is-on')?.dataset.cat || 'entradas')); });
 // la carta no cambia de alto al cambiar de pestaña
 function fijarAltoCarta() {
-  const box = $('.tablero__carta'); if (!box || innerWidth < 900) return;
+  const box = $('.tablero__carta'); if (!box || true) return;
   const ps = $$('.kit-carta__panel', box); if (!ps.length) return;
   let max = 0;
   ps.forEach(p => { const oculto = p.hidden; if (oculto) { p.hidden = false; p.style.visibility = 'hidden'; p.style.position = 'absolute'; p.style.width = $('.kit-carta__panel:not([hidden])', box)?.offsetWidth + 'px'; }
@@ -321,23 +339,10 @@ let anchoCarta = innerWidth; addEventListener('resize', () => { if (innerWidth !
   addEventListener('scroll', () => { if (raf) return; raf = requestAnimationFrame(() => { raf = 0; const y = scrollY; const lejos = y > innerHeight * .8; html.classList.toggle('nav-oculta', lejos && y > y0 + 4 && !html.classList.contains('menu-abierto')); if (y < y0 - 4 || !lejos) html.classList.remove('nav-oculta'); html.classList.toggle('nav-chica', lejos); y0 = y; }); }, { passive: true });
 })();
 
-// ---------- inscripción a evento: fecha a la vista y confirmación propia ----------
-document.addEventListener('click', (e) => {
-  const b = e.target.closest('[data-ev-fecha]'); if (!b) return;
-  setTimeout(() => {
-    const pop = document.querySelector('.kit-pop.is-open'); if (!pop) return;
-    pop.classList.add('es-evento');
-    const chip = pop.querySelector('[data-dias] input:checked')?.closest('label') || pop.querySelector('[data-dias] .is-on');
-    chip?.scrollIntoView({ block: 'nearest', inline: 'center' });
-    const mo = new MutationObserver(() => { pop.querySelectorAll('h3, h2, p, strong').forEach(n => { if (n.textContent.trim() === '¡Reserva pedida!') n.textContent = '¡Quedaste anotado!'; }); });
-    mo.observe(pop, { childList: true, subtree: true }); setTimeout(() => mo.disconnect(), 120000);
-  }, 60);
-});
 
-// en el celu, al cambiar de pestaña la fila de pestañas queda a la vista
-document.addEventListener('click', (e) => {
-  const t = e.target.closest('.tablero .kit-tab'); if (!t || innerWidth >= 900) return;
-  t.scrollIntoView({ block: 'nearest', inline: 'center', behavior: 'smooth' });
-  const tabs = t.parentElement; const top = tabs.getBoundingClientRect().top;
-  if (top < 0 || top > innerHeight * .4) scrollTo({ top: scrollY + top - 90, behavior: 'smooth' });
+// vereda o salón: una sola preferencia
+document.addEventListener('change', (e) => {
+  const x = e.target; if (x.name !== 'extra' || !x.checked || !['vereda', 'salon'].includes(x.value)) return;
+  const otro = x.form?.querySelector(`input[name="extra"][value="${x.value === 'vereda' ? 'salon' : 'vereda'}"]`);
+  if (otro?.checked) { otro.checked = false; otro.dispatchEvent(new Event('input', { bubbles: true })); }
 });

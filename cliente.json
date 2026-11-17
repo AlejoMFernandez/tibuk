@@ -247,8 +247,7 @@
     "categoria": "entradas",
     "nombre": "Langostinos crocantes",
     "descripcion": "Con alioli.",
-    "precio": 28000,
-    "foto": "img/plato-langostinos.webp"
+    "precio": 28000
    },
    {
     "id": "croquetas-de-morcilla",
