@@ -71,20 +71,21 @@ function enredadera(cont, modo) {
 function correrHojas(zona, hojas) {
   if (!zona || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
   let px = -999, py = -999, raf = 0; const movidas = new Set();
-  const R = () => celu() ? 110 : 170;
+  const R = () => celu() ? 150 : 260;
   const pinta = () => {
     raf = 0; const rad = R();
-    for (const h of movidas) { if (Math.hypot(h.x - px, h.y - py) > rad) { h.el.style.removeProperty('--px'); h.el.style.removeProperty('--py'); h.el.style.removeProperty('--pr'); movidas.delete(h); } }
+    for (const h of movidas) { if (Math.hypot(h.x - px, h.y - py) > rad) { h.el.style.removeProperty('--px'); h.el.style.removeProperty('--py'); h.el.style.removeProperty('--pr'); h.el.style.removeProperty('--ps'); movidas.delete(h); } }
     for (const h of hojas) {
       const dx = h.x - px, dy = h.y - py, d = Math.hypot(dx, dy); if (d > rad || d < 1) continue;
-      const f = (1 - d / rad); const k = f * (celu() ? 46 : 70);
-      h.el.style.setProperty('--px', (dx / d * k).toFixed(1) + 'px'); h.el.style.setProperty('--py', (dy / d * k).toFixed(1) + 'px'); h.el.style.setProperty('--pr', (f * 34 * Math.sign(dx || 1)).toFixed(0) + 'deg');
+      const f = Math.pow(1 - d / rad, .7); const k = f * (celu() ? 90 : 170);
+      h.el.style.setProperty('--px', (dx / d * k).toFixed(1) + 'px'); h.el.style.setProperty('--py', (dy / d * k).toFixed(1) + 'px'); h.el.style.setProperty('--pr', (f * 60 * Math.sign(dx || 1)).toFixed(0) + 'deg'); h.el.style.setProperty('--ps', (1 - f * .45).toFixed(2));
       movidas.add(h);
     }
   };
   const mueve = (e) => { const b = zona.getBoundingClientRect(); px = e.clientX - b.left; py = e.clientY - b.top; if (!raf) raf = requestAnimationFrame(pinta); };
   zona.addEventListener('pointermove', mueve, { passive: true });
   zona.addEventListener('pointerdown', mueve, { passive: true });
+  zona.addEventListener('touchmove', (e) => { const t = e.touches[0]; if (t) mueve(t); }, { passive: true });
   zona.addEventListener('pointerleave', () => { px = py = -999; if (!raf) raf = requestAnimationFrame(pinta); });
 }
 
@@ -135,11 +136,11 @@ intro();
 
 // ---------- WOW: la casona ----------
 const PARTES = {
-  vereda: { foto: 'img/pz-vereda.webp', kicker: 'La veredita', tit: 'La más linda del boulevard', txt: 'Sombrillas rojas, la casa verde de fondo y la mesa al sol. Se llena seguido: mejor reservar.', dato: 'Lun 10:00 a 23:30 hs · Mié a sáb 10:00 a 00:00 hs', cta: ['Reservar en la vereda', 'reserva', 'vereda'] },
+  vereda: { foto: 'img/pz-vereda.webp', kicker: 'La veredita', tit: 'La más linda del boulevard', txt: 'Sombrillas rojas, la casa verde de fondo y la mesa al sol. Se llena seguido: mejor reservar.', dato: 'Todos los días desde las 10:00 hs · Martes cerrado', cta: ['Reservar en la vereda', 'reserva', 'vereda'] },
   salon: { foto: 'img/pz-salon.webp', kicker: 'El salón', tit: 'Ladrillo, cuadros y luz baja', txt: 'Mesas de madera, lámparas de cobre y los cuadros de la casa. Para la cena de todos los días o el festejo de fin de año.', dato: 'Cubierto $4.200 · 10% off en efectivo', cta: ['Reservar en el salón', 'reserva', 'salon'] },
-  cocina: { foto: 'img/pz-cocina.webp', kicker: 'La cocina', tit: 'Julián Tiberio, chef y dueño', txt: 'Ganador del Tigre de Oro. Firma una carta de autor: mollejas Tibuk, rösti de salmón y carrillera braseada.', dato: 'Rösti de salmón $44.000 · Mollejas $35.000', cta: ['Ver la pizarra del chef', 'carta'] },
+  cocina: { foto: 'img/pz-cocina.webp', kicker: 'La cocina de Julián', tit: 'Pan casero y cocina de autor', txt: 'Julián Tiberio, chef y dueño, ganó el Tigre de Oro. Firma las mollejas Tibuk, el rösti de salmón y la carrillera.', dato: 'Rösti de salmón $44.000 · Mollejas $35.000', cta: ['Ver la pizarra del chef', 'carta'] },
   horno: { foto: 'img/pz-horno.webp', kicker: 'El horno de barro', tit: 'Lo que sale del barro', txt: 'El Pollo Tibuk con adobo marroquí y las frutas quemadas con helado se hacen en el horno de barro del fondo.', dato: 'Pollo Tibuk $29.000 · Frutas quemadas $19.000', cta: ['Ver la pizarra del chef', 'carta'] },
-  cava: { foto: 'img/pz-cava.webp', kicker: 'La cava', tit: 'Cerca de 200 vinos y catas', txt: 'Malbec, cabernet franc, espumantes y hasta vinos sin alcohol. Catas con bodegas y degustaciones en la casa.', dato: 'Copa premium $9.000 · Descorche $30.000', cta: ['Ver las próximas catas', 'catas'] },
+  cava: { foto: 'img/pz-cava.webp', kicker: 'La cava', tit: 'Más de 150 vinos y catas', txt: 'Malbec, cabernet franc, espumantes y hasta vinos sin alcohol. Catas con bodegas y degustaciones en la casa.', dato: 'Copa premium $9.000 · Descorche $30.000', cta: ['Ver las próximas catas', 'catas'] },
 };
 const escena = $('.escena'), piz = $('.pizarra');
 function enredaderaCasa() {
@@ -269,8 +270,8 @@ function marcoHojas(cont, semilla, densidad) {
   }
   cont.innerHTML = s;
 }
-const ioHojas = new IntersectionObserver(es => es.forEach(e => { if (!e.isIntersecting) return; const c = e.target; marcoHojas(c, c.dataset.hojas === 'pie' ? 31 : 17, c.dataset.hojas === 'pie' ? 9999 : (celu() ? 40 : 70)); ioHojas.unobserve(c); }), { rootMargin: '400px 0px' });
-$$('[data-hojas="foto"], [data-hojas="pie"]').forEach(c => ioHojas.observe(c));
+const ioHojas = new IntersectionObserver(es => es.forEach(e => { if (!e.isIntersecting) return; const c = e.target; marcoHojas(c, c.dataset.hojas === 'pie' ? 31 : c.dataset.hojas === 'foto2' ? 23 : 17, c.dataset.hojas === 'pie' ? 9999 : (celu() ? 40 : 70)); ioHojas.unobserve(c); }), { rootMargin: '400px 0px' });
+$$('[data-hojas="foto"], [data-hojas="foto2"], [data-hojas="pie"]').forEach(c => ioHojas.observe(c));
 
 // ---------- horarios: marcar hoy ----------
 (() => {
@@ -283,9 +284,60 @@ $$('[data-hojas="foto"], [data-hojas="pie"]').forEach(c => ioHojas.observe(c));
 (() => {
   const vis = new Set();
   const io = new IntersectionObserver(es => { es.forEach(e => e.isIntersecting ? vis.add(e.target) : vis.delete(e.target)); html.classList.toggle('sin-pill', vis.size > 0); }, { threshold: .12 });
-  [$('.ha'), celu() ? $('.casona') : null].filter(Boolean).forEach(x => io.observe(x));
+  [$('.ha'), $('.pie'), celu() ? $('.casona') : null].filter(Boolean).forEach(x => io.observe(x));
 })();
 document.addEventListener('click', (e) => {
   if (!e.target.closest('[data-kit-open="reservas"]')) return;
-  setTimeout(() => { const pop = document.querySelector('.kit-pop.is-open'); const tt = pop?.querySelector('.kit-pop__title'); if (tt && tt.textContent.startsWith('Anotate')) { tt.textContent = 'Reservá tu mesa en la casona'; pop.setAttribute('aria-label', tt.textContent); } }, 30);
+  setTimeout(() => { const pop = document.querySelector('.kit-pop.is-open'); pop?.classList.remove('es-evento'); const tt = pop?.querySelector('.kit-pop__title'); if (tt && tt.textContent.startsWith('Anotate')) { tt.textContent = 'Reservá tu mesa en la casona'; pop.setAttribute('aria-label', tt.textContent); } }, 30);
+});
+
+// ---------- pizarra: la foto acompaña a la pestaña ----------
+const FOTO_TAB = { entradas: 'langostinos-crocantes', principales: 'bondiola-braseada', postres: 'volcan-de-chocolate' };
+function fotoDeTab(cat) {
+  if (!tabFoto || innerWidth < 900) return;
+  const it = cat && document.querySelector(`.tablero .kit-item[data-cat="${cat}"][data-photo]`);
+  const src = it ? it.dataset.photo : 'img/pz-cocina.webp';
+  const cap = it ? $('.pl__nom', it).textContent : 'La panera de la casa';
+  fotoId = it ? it.dataset.id : null;
+  tabFoto.classList.remove('on');
+  const pre = new Image(); pre.onload = () => { tabImg.src = src; tabCap.textContent = cap; tabFoto.classList.add('on'); }; pre.src = src;
+}
+document.addEventListener('click', (e) => { const t = e.target.closest('.tablero .kit-tab'); if (t) fotoDeTab(t.dataset.cat); });
+// la carta no cambia de alto al cambiar de pestaña
+function fijarAltoCarta() {
+  const box = $('.tablero__carta'); if (!box || innerWidth < 900) return;
+  const ps = $$('.kit-carta__panel', box); if (!ps.length) return;
+  let max = 0;
+  ps.forEach(p => { const oculto = p.hidden; if (oculto) { p.hidden = false; p.style.visibility = 'hidden'; p.style.position = 'absolute'; p.style.width = $('.kit-carta__panel:not([hidden])', box)?.offsetWidth + 'px'; }
+    max = Math.max(max, p.offsetHeight); if (oculto) { p.hidden = true; p.style.visibility = ''; p.style.position = ''; p.style.width = ''; } });
+  ps.forEach(p => { p.style.minHeight = max + 'px'; });
+}
+document.addEventListener('kit:carta', (e) => { if (e.detail.el?.closest('.tablero')) requestAnimationFrame(fijarAltoCarta); });
+let anchoCarta = innerWidth; addEventListener('resize', () => { if (innerWidth !== anchoCarta) { anchoCarta = innerWidth; $$('.tablero .kit-carta__panel').forEach(p => p.style.minHeight = ''); fijarAltoCarta(); } });
+
+// ---------- el cartel se esconde al bajar (celu) y vuelve al subir ----------
+(() => {
+  let y0 = scrollY, raf = 0;
+  addEventListener('scroll', () => { if (raf) return; raf = requestAnimationFrame(() => { raf = 0; const y = scrollY; const lejos = y > innerHeight * .8; html.classList.toggle('nav-oculta', lejos && y > y0 + 4 && !html.classList.contains('menu-abierto')); if (y < y0 - 4 || !lejos) html.classList.remove('nav-oculta'); html.classList.toggle('nav-chica', lejos); y0 = y; }); }, { passive: true });
+})();
+
+// ---------- inscripción a evento: fecha a la vista y confirmación propia ----------
+document.addEventListener('click', (e) => {
+  const b = e.target.closest('[data-ev-fecha]'); if (!b) return;
+  setTimeout(() => {
+    const pop = document.querySelector('.kit-pop.is-open'); if (!pop) return;
+    pop.classList.add('es-evento');
+    const chip = pop.querySelector('[data-dias] input:checked')?.closest('label') || pop.querySelector('[data-dias] .is-on');
+    chip?.scrollIntoView({ block: 'nearest', inline: 'center' });
+    const mo = new MutationObserver(() => { pop.querySelectorAll('h3, h2, p, strong').forEach(n => { if (n.textContent.trim() === '¡Reserva pedida!') n.textContent = '¡Quedaste anotado!'; }); });
+    mo.observe(pop, { childList: true, subtree: true }); setTimeout(() => mo.disconnect(), 120000);
+  }, 60);
+});
+
+// en el celu, al cambiar de pestaña la fila de pestañas queda a la vista
+document.addEventListener('click', (e) => {
+  const t = e.target.closest('.tablero .kit-tab'); if (!t || innerWidth >= 900) return;
+  t.scrollIntoView({ block: 'nearest', inline: 'center', behavior: 'smooth' });
+  const tabs = t.parentElement; const top = tabs.getBoundingClientRect().top;
+  if (top < 0 || top > innerHeight * .4) scrollTo({ top: scrollY + top - 90, behavior: 'smooth' });
 });

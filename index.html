@@ -28,8 +28,8 @@ if(!matchMedia('(prefers-reduced-motion: reduce)').matches&&new URLSearchParams(
 <link rel="preload" href="fonts/epilogue-latin-900-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="fonts/figtree-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="css/fuentes.css?v=2">
-<link rel="stylesheet" href="kit/kit.css?v=2">
-<link rel="stylesheet" href="css/tibuk.css?v=2">
+<link rel="stylesheet" href="kit/kit.css?v=3">
+<link rel="stylesheet" href="css/tibuk.css?v=3">
 </head>
 <body>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
@@ -72,6 +72,7 @@ if(!matchMedia('(prefers-reduced-motion: reduce)').matches&&new URLSearchParams(
   <div class="menu__pie">
     <button class="chapa" type="button" data-kit-open="reservas">Reservá tu mesa</button>
     <p>Boulevard Sáenz Peña 1400, Tigre<br>Martes cerrado</p>
+    <a class="raya" href="admin/" target="_blank" rel="noopener">Probá el panel del dueño</a>
   </div>
 </div>
 
@@ -172,7 +173,7 @@ if(!matchMedia('(prefers-reduced-motion: reduce)').matches&&new URLSearchParams(
         <path d="M968 780V600" stroke="#5B4632" stroke-width="10"/>
       </svg>
       <div class="pistas" aria-hidden="true">
-        <span style="--x:25.5%;--y:41%" data-p="salon"></span><span style="--x:74.5%;--y:41%" data-p="horno"></span><span style="--x:50%;--y:52%" data-p="cocina"></span><span style="--x:74.5%;--y:74%" data-p="cava"></span><span style="--x:24%;--y:68%" data-p="vereda"></span>
+        <span style="--x:25.5%;--y:41%" data-p="salon"></span><span style="--x:74.5%;--y:41%" data-p="horno"></span><span style="--x:50%;--y:76%" data-p="cocina"></span><span style="--x:73.6%;--y:10%" data-p="horno2"></span><span style="--x:74.5%;--y:74%" data-p="cava"></span><span style="--x:24%;--y:68%" data-p="vereda"></span>
       </div>
     </div>
     <div class="pizarra" aria-live="polite">
@@ -215,7 +216,7 @@ if(!matchMedia('(prefers-reduced-motion: reduce)').matches&&new URLSearchParams(
 <!-- ============ Catas y noches ============ -->
 <section class="catas" id="catas">
   <div class="catas__in">
-    <figure class="catas__foto rv"><img src="img/catas.webp" width="900" height="1006" alt="Descorchando un chardonnay en una cata de Tibuk" loading="lazy"></figure>
+    <figure class="catas__foto rv"><img src="img/catas.webp" width="900" height="1006" alt="Descorchando un chardonnay en una cata de Tibuk" loading="lazy"><div class="hojas hojas--marco" data-hojas="foto2" aria-hidden="true"></div></figure>
     <div class="catas__txt">
       <header class="rv">
         <p class="kicker kicker--osc">Catas y noches</p>
@@ -240,7 +241,7 @@ if(!matchMedia('(prefers-reduced-motion: reduce)').matches&&new URLSearchParams(
     <div class="casa-sec__txt rv">
       <p class="kicker kicker--osc">Julián y la casa</p>
       <h2>Tibuk viene de Tiberio.</h2>
-      <p>El nombre sale del apellido de Julián Tiberio, el chef y dueño. Cocinó en Formentera y en José Ignacio, volvió a Tigre y en la casona del boulevard armó una cocina de autor con horno de barro, panera casera y una cava de casi 200 etiquetas.</p>
+      <p>El nombre sale del apellido de Julián Tiberio, el chef y dueño. Cocinó en Formentera y en José Ignacio, volvió a Tigre y en la casona del boulevard armó una cocina de autor con horno de barro, panera casera y una carta de más de 150 vinos.</p>
       <ul class="sellos">
         <li><b>Tigre de Oro</b><span>Premio del Municipio de Tigre</span></li>
         <li><b>Horno de barro</b><span>Pollo Tibuk y frutas quemadas</span></li>
@@ -279,7 +280,7 @@ if(!matchMedia('(prefers-reduced-motion: reduce)').matches&&new URLSearchParams(
     <div class="llegar__txt rv">
       <p class="kicker kicker--osc">Cómo llegar</p>
       <h2>Boulevard Sáenz Peña 1400</h2>
-      <p class="llegar__dir">Tigre, a pasos de la estación Tigre Centro. <span class="estado estado--osc" data-estado>Hoy abierto</span></p>
+      <p class="llegar__dir">Tigre, provincia de Buenos Aires. <span class="estado estado--osc" data-estado>Hoy abierto</span></p>
       <dl class="horas" data-horas>
         <div><dt>Lunes</dt><dd>10:00 a 23:30 hs</dd></div>
         <div><dt>Martes</dt><dd>Cerrado</dd></div>
@@ -306,15 +307,15 @@ if(!matchMedia('(prefers-reduced-motion: reduce)').matches&&new URLSearchParams(
 </svg></span>
     <div class="pie__cols">
       <p>Boulevard Sáenz Peña 1400, Tigre<br>Lun 10:00 a 23:30 hs · Mar cerrado<br>Mié a sáb 10:00 a 00:00 hs · Dom 10:00 a 17:00 hs</p>
-      <p><a href="https://www.instagram.com/tibukcocina/" target="_blank" rel="noopener">Instagram @tibukcocina</a><br><a href="https://wa.me/5491155095050" target="_blank" rel="noopener">WhatsApp 11 5509-5050</a><br><a href="carta/">Carta completa</a></p>
+      <p><a href="https://www.instagram.com/tibukcocina/" target="_blank" rel="noopener">Instagram @tibukcocina</a><br><a href="https://wa.me/5491155095050" target="_blank" rel="noopener">WhatsApp 11 5509-5050</a><br><a href="carta/">Carta completa</a><br><a href="admin/" target="_blank" rel="noopener">Probá el panel del dueño</a></p>
     </div>
     <p class="credito">Sitio desarrollado por <a href="https://alejomfernandez.com.ar" target="_blank" rel="noopener">Alejo Martín Fernández</a></p>
   </div>
 </footer>
 
-<script type="module" src="js/tibuk.js?v=2"></script>
+<script type="module" src="js/tibuk.js?v=3"></script>
 <script type="module">
-  import { initKit } from './kit/kit.js?v=2';
+  import { initKit } from './kit/kit.js?v=3';
   window.kit = await initKit({
     config: 'cliente.json', imagenes: { lqip: 'img/lqip.json' },
     carta: { pedir: false, template: (p, c) => window.tibukItem ? window.tibukItem(p, c) : '' },
