@@ -29,7 +29,7 @@ if(!matchMedia('(prefers-reduced-motion: reduce)').matches&&new URLSearchParams(
 <link rel="preload" href="fonts/figtree-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="css/fuentes.css?v=2">
 <link rel="stylesheet" href="kit/kit.css?v=5">
-<link rel="stylesheet" href="css/tibuk.css?v=5">
+<link rel="stylesheet" href="css/tibuk.css?v=6">
 </head>
 <body>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
@@ -183,7 +183,7 @@ if(!matchMedia('(prefers-reduced-motion: reduce)').matches&&new URLSearchParams(
           <p class="pz-kicker" data-pz="kicker">Bienvenidos</p>
           <h3 class="pz-tit" data-pz="tit">Boulevard Sáenz Peña 1400</h3>
           <p class="pz-txt" data-pz="txt">La casa verde de la esquina. Tocá la vereda, una ventana, la puerta, la chimenea o la cava para entrar.</p>
-          <p class="pz-dato" data-pz="dato">Martes cerrado · Lun 10:00 a 23:30 hs · Mié a sáb 10:00 a 00:00 hs · Dom 10:00 a 17:00 hs</p>
+          <p class="pz-dato" data-pz="dato" data-estado-texto>Martes cerrado · el resto de la semana desde las 10:00 hs</p>
           <div class="pz-cta" data-pz="cta"><button class="chapa chapa--cal" type="button" data-ir="vereda">Ver la vereda</button></div>
         </div>
       </div>
@@ -307,15 +307,15 @@ if(!matchMedia('(prefers-reduced-motion: reduce)').matches&&new URLSearchParams(
 </svg></span>
     <div class="pie__cols">
       <p>Boulevard Sáenz Peña 1400, Tigre<br>Lun 10:00 a 23:30 hs · Mar cerrado<br>Mié a sáb 10:00 a 00:00 hs · Dom 10:00 a 17:00 hs</p>
-      <p><a href="https://www.instagram.com/tibukcocina/" target="_blank" rel="noopener">Instagram @tibukcocina</a><br><a href="https://wa.me/5491155095050" target="_blank" rel="noopener">WhatsApp 11 5509-5050</a><br><a href="carta/">Carta completa</a><br><a href="admin/" target="_blank" rel="noopener">Probá el panel del dueño</a></p>
+      <p><a href="https://www.instagram.com/tibukcocina/" target="_blank" rel="noopener">Instagram @tibukcocina</a><br><a href="https://wa.me/5491155095050" target="_blank" rel="noopener">WhatsApp 11 5509-5050</a><br><a href="carta/">Carta completa</a></p>
     </div>
     <p class="credito">Sitio desarrollado por <a href="https://alejomfernandez.com.ar" target="_blank" rel="noopener">Alejo Martín Fernández</a></p>
   </div>
 </footer>
 
-<script type="module" src="js/tibuk.js?v=5"></script>
+<script type="module" src="js/tibuk.js?v=6"></script>
 <script type="module">
-  import { initKit } from './kit/kit.js?v=5';
+  import { initKit } from './kit/kit.js?v=6';
   window.kit = await initKit({
     config: 'cliente.json', imagenes: { lqip: 'img/lqip.json' },
     carta: { pedir: false, template: (p, c) => window.tibukItem ? window.tibukItem(p, c) : '' },

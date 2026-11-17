@@ -179,7 +179,7 @@ export function crearFormReserva(ctx, { onDone, inicial = {} } = {}) {
     const { url } = linkWhatsApp(config.whatsapp, t('waReserva', { negocio: config.nombre, ...res }));
     el.innerHTML = `<div class="kit-done">
       <div class="kit-done__ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></div>
-      <h3>${esc(evSvc ? t('inscripcionLista') : t('reservaLista'))}</h3><p>${esc(evSvc ? `${evSvc.nombre} · ${res.dia} · ${res.hora} · ${res.personas}` : t('reservaListaSub', res))}</p>
+      <h3>${esc(evSvc ? t('inscripcionLista') : t('reservaLista'))}</h3><p>${esc(evSvc ? `${evSvc.nombre} · ${res.dia} · ${res.hora} hs · ${res.personas}` : t('reservaListaSub', res))}</p>
       ${url ? `<div class="kit-row kit-row--center"><a class="kit-btn" href="${esc(url)}" target="_blank" rel="noopener">${esc(t('avisarWA'))}</a></div>` : ''}
     </div>`;
   }

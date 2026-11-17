@@ -103,6 +103,7 @@ function estado() {
 }
 const est = estado();
 $$('[data-estado]').forEach(e => { e.textContent = est.txt; e.classList.toggle('cerrado', !est.abierto); });
+$$('[data-estado-texto]').forEach(e => { e.textContent = est.txt + ' · Martes cerrado'; });
 
 // ---------- arranque ----------
 const ha = $('.ha'), hbPin = $('.hb-pin');
