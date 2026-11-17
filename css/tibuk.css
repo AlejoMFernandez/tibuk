@@ -521,3 +521,28 @@ html.nav-chica .nav-marca__chapa{width:76px;padding:16px 8px 8px}
   .pizarra__marco{--pz-h:calc(100svh - 84px - 24px - 36px - 18px)}
   .escena__casa{max-width:calc((100svh - 170px) * 1000 / 860)}
 }
+
+/* ===== tercera revisión ===== */
+.tablero .kit-item.pl-oculto{display:none}
+.pl-mas{grid-column:1/-1;display:inline-flex;align-items:center;min-height:44px;margin-top:10px;color:var(--fachada);font:700 15px/1 var(--fb)}
+@media (min-width:900px){
+  .tablero__lado{height:auto}
+  .tablero__foto img{aspect-ratio:4/3;height:auto;object-fit:cover;background:#fff;padding:10px 10px 0}
+  .tablero__foto{background:#fff;padding-bottom:12px;transform:rotate(-1.5deg);box-shadow:0 14px 30px rgba(0,0,0,.35)}
+  .tablero__foto img{transform:none!important;opacity:1}
+  .tablero__foto figcaption{color:var(--tinta);margin:10px 14px 0;font-size:18px}
+  .tablero__foto .tablero__ayuda{display:none}
+  .tablero__nota{min-height:0;aspect-ratio:auto;height:290px}
+}
+.pz-dato{-webkit-line-clamp:3;min-height:4.2em}
+.kit-demo-pill{margin:18px 0 0!important}
+body{background:var(--enred)}
+@media (max-width:899px){
+  .llegar__txt{display:contents}
+  .llegar__txt>.kicker,.llegar__txt>h2{order:-2}
+  .llegar__txt>h2{margin-bottom:24px}
+  .llegar__mapa{order:-1}
+  .llegar{padding-top:var(--aire)}
+  .llegar__txt>*{min-width:0}
+}
+.pie .kit-demo-pill{color:#1C1C1C!important}

@@ -27,6 +27,11 @@ export function crearFormReserva(ctx, { onDone, inicial = {} } = {}) {
   const servIni = evSvc ? evSvc.id : conServicios && inicial.hora ? (evDelDia?.id || tandaDe(R, inicial.hora)?.servicio.id || null) : null;
   const st = { personas: Math.max(1, Math.min(Number(inicial.personas) || 2, R.maxPersonas)), fecha: fechaIni, servicio: servIni, hora: inicial.hora || null, nombre: '', telefono: '', email: '', comentario: '', extras: [] };
 
+  function fmtEvento() {
+    const d = dias.find(x => x.fecha === fechaIni); if (!d) return '';
+    const [, m, dd] = d.fecha.split('-').map(Number);
+    return `${t('diasCortos')[d.dow]} ${dd} ${t('meses')[m - 1]} · ${inicial.hora || ''} hs`;
+  }
   const el = h(`<form class="kit-root kit-resv" novalidate>
     <div class="kit-resv__row">
       <span class="kit-label" id="kr-p">${esc(t('personas'))}</span>
@@ -37,16 +42,17 @@ export function crearFormReserva(ctx, { onDone, inicial = {} } = {}) {
     <p class="kit-hint" data-max hidden></p>
     <div class="kit-resv__block"${evSvc ? ' hidden' : ''}><span class="kit-label">${esc(t('dia'))}</span><div class="kit-chips kit-chips--scroll" data-dias role="radiogroup"></div></div>
     ${conServicios && !evSvc ? `<div class="kit-resv__block"><span class="kit-label" id="kr-s">${esc(t('servicio'))}</span><div class="kit-seg kit-seg--serv" data-servicios role="radiogroup" aria-labelledby="kr-s"></div></div>` : ''}
-    <div class="kit-resv__block"><span class="kit-label">${esc(t('hora'))}</span><div class="${conServicios ? 'kit-tandas' : 'kit-chips kit-chips--grid'}" data-horas role="radiogroup" aria-live="polite"></div></div>
+    ${evSvc ? `<p class="kit-resv__evento">${esc(fmtEvento())}</p>` : ''}
+    <div class="kit-resv__block"${evSvc ? ' hidden' : ''}><span class="kit-label">${esc(t('hora'))}</span><div class="${conServicios ? 'kit-tandas' : 'kit-chips kit-chips--grid'}" data-horas role="radiogroup" aria-live="polite"></div></div>
     <div class="kit-resv__datos">
       <label class="kit-field"><span>${esc(t('nombre'))}</span><input name="nombre" autocomplete="name" required></label>
       <label class="kit-field"><span>${esc(t('telefono'))}</span><input name="telefono" type="tel" inputmode="tel" autocomplete="tel" required></label>
       <label class="kit-field"><span>${esc(t('email'))}</span><input name="email" type="email" autocomplete="email"></label>
-      <label class="kit-field kit-field--full"><span>${esc(t('comentario'))}</span><textarea name="comentario" rows="2" maxlength="280"></textarea></label>
+      <label class="kit-field kit-field--full"><span>${esc(evSvc ? t('comentarioEvento') : t('comentario'))}</span><textarea name="comentario" rows="2" maxlength="280"></textarea></label>
       ${extras.length && !evSvc ? `<div class="kit-extras kit-field--full">${extras.map(x => `<label class="kit-check"><input type="checkbox" name="extra" value="${esc(x.id)}"><span>${esc(x.label || x.id)}</span></label>`).join('')}</div>` : ''}
     </div>
     <p class="kit-msg" role="alert" hidden></p>
-    <button type="submit" class="kit-btn kit-btn--block kit-btn--big">${esc(t('confirmarReserva'))}</button>
+    <button type="submit" class="kit-btn kit-btn--block kit-btn--big">${esc(evSvc ? t('confirmarLugar') : t('confirmarReserva'))}</button>
   </form>`);
 
   let autoDia = !inicial.fecha;

@@ -28,8 +28,8 @@ if(!matchMedia('(prefers-reduced-motion: reduce)').matches&&new URLSearchParams(
 <link rel="preload" href="fonts/epilogue-latin-900-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="fonts/figtree-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="css/fuentes.css?v=2">
-<link rel="stylesheet" href="kit/kit.css?v=4">
-<link rel="stylesheet" href="css/tibuk.css?v=4">
+<link rel="stylesheet" href="kit/kit.css?v=5">
+<link rel="stylesheet" href="css/tibuk.css?v=5">
 </head>
 <body>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
@@ -183,8 +183,8 @@ if(!matchMedia('(prefers-reduced-motion: reduce)').matches&&new URLSearchParams(
           <p class="pz-kicker" data-pz="kicker">Bienvenidos</p>
           <h3 class="pz-tit" data-pz="tit">Boulevard Sáenz Peña 1400</h3>
           <p class="pz-txt" data-pz="txt">La casa verde de la esquina. Tocá la vereda, una ventana, la puerta, la chimenea o la cava para entrar.</p>
-          <p class="pz-dato" data-pz="dato">Lun 10:00 a 23:30 · Mié a sáb 10:00 a 00:00 · Dom 10:00 a 17:00 hs · Mar cerrado</p>
-          <div class="pz-cta" data-pz="cta"><button class="chapa chapa--cal" type="button" data-ir="vereda">Empezar por la vereda</button></div>
+          <p class="pz-dato" data-pz="dato">Martes cerrado · Lun 10:00 a 23:30 hs · Mié a sáb 10:00 a 00:00 hs · Dom 10:00 a 17:00 hs</p>
+          <div class="pz-cta" data-pz="cta"><button class="chapa chapa--cal" type="button" data-ir="vereda">Ver la vereda</button></div>
         </div>
       </div>
       <div class="pizarra__patas" aria-hidden="true"><i></i><i></i></div>
@@ -313,9 +313,9 @@ if(!matchMedia('(prefers-reduced-motion: reduce)').matches&&new URLSearchParams(
   </div>
 </footer>
 
-<script type="module" src="js/tibuk.js?v=4"></script>
+<script type="module" src="js/tibuk.js?v=5"></script>
 <script type="module">
-  import { initKit } from './kit/kit.js?v=4';
+  import { initKit } from './kit/kit.js?v=5';
   window.kit = await initKit({
     config: 'cliente.json', imagenes: { lqip: 'img/lqip.json' },
     carta: { pedir: false, template: (p, c) => window.tibukItem ? window.tibukItem(p, c) : '' },

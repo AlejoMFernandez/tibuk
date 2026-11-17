@@ -323,7 +323,7 @@ document.addEventListener('click', (e) => { const t = e.target.closest('.tablero
 document.addEventListener('kit:carta', (e) => { if (e.detail.el?.closest('.tablero')) requestAnimationFrame(() => ladoDeTab($('.tablero .kit-tab.is-on')?.dataset.cat || 'entradas')); });
 // la carta no cambia de alto al cambiar de pestaña
 function fijarAltoCarta() {
-  const box = $('.tablero__carta'); if (!box || true) return;
+  const box = $('.tablero__carta'); if (!box || innerWidth < 900) return;
   const ps = $$('.kit-carta__panel', box); if (!ps.length) return;
   let max = 0;
   ps.forEach(p => { const oculto = p.hidden; if (oculto) { p.hidden = false; p.style.visibility = 'hidden'; p.style.position = 'absolute'; p.style.width = $('.kit-carta__panel:not([hidden])', box)?.offsetWidth + 'px'; }
@@ -346,3 +346,16 @@ document.addEventListener('change', (e) => {
   const otro = x.form?.querySelector(`input[name="extra"][value="${x.value === 'vereda' ? 'salon' : 'vereda'}"]`);
   if (otro?.checked) { otro.checked = false; otro.dispatchEvent(new Event('input', { bubbles: true })); }
 });
+
+// ---------- la pizarra muestra hasta 8 platos por pestaña; el resto, en la carta completa ----------
+document.addEventListener('kit:carta', (e) => {
+  if (!e.detail.el?.closest('.tablero')) return;
+  $$('.tablero .kit-carta__panel').forEach(p => {
+    p.querySelector('.pl-mas')?.remove();
+    const its = $$('.kit-item', p); its.forEach((it, i) => it.classList.toggle('pl-oculto', i >= 8));
+    if (its.length > 8) p.insertAdjacentHTML('beforeend', `<a class="pl-mas" href="carta/">Y ${its.length - 8} ${its.length - 8 === 1 ? "plato más" : "platos más"} en la carta completa</a>`);
+  });
+});
+// ---------- la píldora del panel va adentro del pie, antes del crédito ----------
+document.addEventListener('kit:listo', () => { const p = document.querySelector('.kit-demo-pill'), cr = $('.pie .credito'); if (p && cr) cr.before(p); });
+setTimeout(() => { const p = document.querySelector('.kit-demo-pill'), cr = $('.pie .credito'); if (p && cr && p.nextElementSibling !== cr) cr.before(p); }, 2500);
