@@ -1,0 +1,424 @@
+/* Tibuk · moodboard V2 (hero A / hero B / la casona) */
+:root{
+  --cal:#F2EDE0; --cal2:#E9E2D0; --tinta:#1C1C1C; --gris:#4A4A44;
+  --fachada:#A9AE3E; --fachada-osc:#8C922F; --enred:#2F4A1E; --enred2:#24391A; --hoja:#4E6E28; --hoja2:#3F5E22;
+  --corten:#8A4B2A; --corten-osc:#6E3A20; --sombrilla:#C8202F; --madera:#6B3F26; --pizarra:#1E241B;
+  --ft:'Epilogue',system-ui,sans-serif; --fb:'Figtree',system-ui,sans-serif; --fs:'Newsreader',Georgia,serif;
+  --pad:clamp(22px,4.6vw,76px); --aire:clamp(88px,12vw,180px);
+  --ease:cubic-bezier(.2,.8,.2,1); --brote:cubic-bezier(.25,1.35,.4,1);
+  --kit-primario:#8A4B2A;
+}
+*,*::before,*::after{box-sizing:border-box}
+[hidden]{display:none!important}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+html,body{overflow-x:clip}
+body{margin:0;background:var(--cal);color:var(--tinta);font:400 17px/1.65 var(--fb)}
+img{display:block;max-width:100%}
+a{color:inherit}
+button{font:inherit;color:inherit;cursor:pointer;touch-action:manipulation}
+main{display:grid;grid-template-columns:minmax(0,1fr)}
+
+/* ---------- botones: chapa calada + raya ---------- */
+.chapa{position:relative;display:inline-flex;align-items:center;gap:12px;min-height:52px;padding:0 26px;border:0;border-radius:2px;
+  background:var(--corten);color:var(--cal);font:700 16px/1 var(--fb);letter-spacing:.02em;text-decoration:none;overflow:hidden;isolation:isolate}
+.chapa::before,.chapa::after{content:"";width:6px;height:6px;border-radius:50%;background:rgba(242,237,224,.55);flex:none}
+.chapa>*{position:relative}
+.chapa span.fill,.chapa::selection{}
+.chapa{background-image:linear-gradient(var(--corten-osc),var(--corten-osc));background-size:0% 100%;background-repeat:no-repeat;transition:background-size .45s var(--ease)}
+@media (hover:hover){.chapa:hover{background-size:100% 100%}}
+.chapa:active{transform:translateY(1px)}
+.chapa--chica{min-height:44px;padding:0 18px;font-size:15px}
+.chapa--cal{background-color:var(--cal);color:var(--tinta);background-image:linear-gradient(#fff,#fff)}
+.chapa--cal::before,.chapa--cal::after{background:rgba(28,28,28,.35)}
+.raya{display:inline-flex;align-items:center;min-height:48px;padding:0 6px!important;font:700 16px/1 var(--fb);text-decoration:none;color:var(--cal);
+  background:linear-gradient(currentColor,currentColor) left calc(100% - 12px)/100% 2px no-repeat;padding:0 2px;transition:background-size .4s var(--ease)}
+@media (hover:hover){.raya:hover{background-size:0 2px;background-position:right calc(100% - 12px)}}
+.kicker{display:flex;flex-wrap:wrap;align-items:center;gap:10px 14px;margin:0 0 18px;font:600 14px/1.3 var(--fb);letter-spacing:.14em;text-transform:uppercase;color:var(--cal)}
+.kicker--osc{color:var(--corten)}
+.estado{display:inline-flex;align-items:center;gap:8px;padding:7px 12px 7px 10px;background:var(--cal);color:var(--enred);border-radius:2px;letter-spacing:.06em}
+.estado::before{content:"";width:8px;height:8px;border-radius:50%;background:#3E9B3A}
+.estado.cerrado::before{background:var(--sombrilla)}
+
+/* ---------- nav: el cartel colgante ---------- */
+.nav{position:fixed;inset:0 0 auto;z-index:40;display:flex;justify-content:space-between;align-items:flex-start;
+  padding:calc(env(safe-area-inset-top) + 0px) max(var(--pad),env(safe-area-inset-right)) 0 max(var(--pad),env(safe-area-inset-left));pointer-events:none}
+.nav>*{pointer-events:auto}
+.nav-marca{display:block;color:var(--cal);transform-origin:50% 0;animation:mece 5s ease-in-out infinite alternate}
+.nav-marca__chapa{display:block;position:relative;width:94px;padding:22px 10px 12px;background:var(--corten);box-shadow:0 10px 24px rgba(20,25,10,.25)}
+.nav-marca__chapa::before{content:"";position:absolute;left:50%;top:-14px;width:44px;height:16px;transform:translateX(-50%);border:2px solid #3A2A1C;border-bottom:0}
+.nav-marca svg{width:100%;height:auto;display:block}
+.nav-der{display:flex;gap:10px;align-items:center;margin-top:14px}
+.nav-menu{display:inline-flex;align-items:center;gap:10px;min-height:44px;padding:0 14px;border:0;border-radius:2px;background:var(--cal);color:var(--tinta);font:700 15px/1 var(--fb)}
+.nav-menu i{width:18px;height:10px;border-block:2px solid currentColor}
+@keyframes mece{from{transform:rotate(-1.6deg)}to{transform:rotate(1.6deg)}}
+@media (min-width:1024px){.nav-marca__chapa{width:118px;padding:26px 14px 14px}.nav-der{margin-top:22px}}
+
+/* menú a pantalla completa */
+.menu{position:fixed;inset:0;z-index:60;background:var(--enred);color:var(--cal);display:grid;align-content:center;padding:96px var(--pad) 40px;overflow:hidden}
+.menu__hojas{position:absolute;inset:0;opacity:.5}
+.menu__links{position:relative;display:grid;gap:4px}
+.menu__links a{font:900 clamp(38px,9vw,88px)/1.08 var(--ft);letter-spacing:-.02em;text-decoration:none;padding:6px 0}
+.menu__pie{position:relative;margin-top:40px;display:flex;flex-wrap:wrap;gap:20px 32px;align-items:center}
+.menu__pie p{margin:0;color:var(--cal2)}
+.menu .nav-cerrar{position:absolute;top:18px;right:var(--pad)}
+html.menu-abierto{overflow:hidden}
+html.menu-abierto .nav-menu i{border-top-color:transparent;height:2px;background:currentColor;transform:rotate(45deg)}
+
+/* ---------- hojas (enredadera generada) ---------- */
+.hojas{position:absolute;inset:0;overflow:clip;pointer-events:none}
+.h{position:absolute;left:0;top:0;width:var(--t);height:var(--t);margin:calc(var(--t) / -2) 0 0 calc(var(--t) / -2);color:var(--c);
+  transform:translate(calc(var(--x) + var(--px,0px)),calc(var(--y) + var(--py,0px))) rotate(calc(var(--r) + var(--pr,0deg))) scale(var(--s,1));
+  transition:transform .35s var(--ease)}
+.h svg{width:100%;height:100%;display:block;fill:currentColor;transform-origin:50% 95%}
+.h.mece svg{animation:hojita var(--m,4s) ease-in-out var(--md,0s) infinite alternate}
+@keyframes hojita{from{transform:rotate(-4deg)}to{transform:rotate(4deg)}}
+
+/* ---------- HERO A · la enredadera ---------- */
+.ha{position:relative;min-height:100svh;height:100svh;overflow:clip;background:var(--enred2);color:var(--cal);isolation:isolate;
+  --hx:50%;--hy:27.5%;--hw:48vw;--hh:23svh}
+.ha-foto{position:absolute;left:calc(var(--hx) - var(--hw));top:calc(var(--hy) - var(--hh));width:calc(var(--hw) * 2);height:calc(var(--hh) * 2)}
+.ha-foto img{width:100%;height:100%;object-fit:cover;object-position:20% 50%}
+.ha-base{position:absolute;inset:-2px;background:var(--enred2);
+  -webkit-mask:radial-gradient(var(--hw) var(--hh) at var(--hx) var(--hy),transparent 92%,#000 95%);
+          mask:radial-gradient(var(--hw) var(--hh) at var(--hx) var(--hy),transparent 92%,#000 95%)}
+.ha .hojas{pointer-events:none}
+.ha-txt{position:absolute;left:0;right:0;bottom:0;padding:0 var(--pad) calc(30px + env(safe-area-inset-bottom));z-index:3;display:flex;flex-direction:column}
+.ha-acc{display:contents}
+.ha-acc .kicker{order:-1}
+.ha-tit{margin:0;font:900 clamp(50px,14.5vw,168px)/.9 var(--ft);letter-spacing:-.035em}
+.ln{display:block;overflow:clip;padding-bottom:.06em;vertical-align:top}
+.ln>span{display:inline-block}
+.ha-sub{margin:14px 0 22px;max-width:30ch;font-size:18px;line-height:1.5;color:var(--cal)}
+.ha-sub em,.hb-sub em{font:italic 400 1.18em/1 var(--fs)}
+.ctas{display:flex;flex-wrap:wrap;align-items:center;gap:12px 22px}
+@media (min-width:768px){
+  .ha{--hx:56%;--hy:41%;--hw:40vw;--hh:37vh}
+  .ha-foto img{object-position:50% 60%}
+  .ha-txt{display:grid;grid-template-columns:auto minmax(0,440px);justify-content:space-between;align-items:end;gap:0 48px;padding-bottom:48px}
+  .ha-acc{display:block;background:var(--enred2);padding:26px 30px 24px;margin-bottom:4px}
+  .ha-acc .kicker{gap:10px;margin-bottom:16px}
+  .ha-sub{margin:0 0 20px;font-size:19px}
+}
+@media (min-width:1100px){.ha-tit{font-size:clamp(110px,10.4vw,176px)}.ha-txt{gap:0 64px}}
+
+/* ---------- HERO B · un día en la casa verde ---------- */
+.hb{position:relative;height:400svh;background:var(--enred2);color:var(--cal)}
+.hb-pin{position:sticky;top:0;height:100svh;overflow:clip;isolation:isolate}
+.hb-fotos,.hb-m{position:absolute;inset:0;margin:0}
+.hb-m{clip-path:inset(100% 0 0 0);transition:clip-path .9s var(--ease)}
+.hb-m.on,.hb-m.paso{clip-path:inset(0 0 0 0)}
+.hb-m img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transform:scale(1.08);transition:transform 1.6s var(--ease)}
+.hb-m.on img{transform:scale(1)}
+.hb-velo{position:absolute;inset:0;background:linear-gradient(180deg,rgba(24,36,16,.5) 0%,rgba(24,36,16,0) 20%,rgba(24,36,16,.25) 32%,rgba(24,36,16,.9) 50%,rgba(24,36,16,.97))}
+.hb-txt{position:absolute;left:0;right:0;bottom:0;padding:0 var(--pad) calc(78px + env(safe-area-inset-bottom));z-index:3}
+.hb-reloj{font:900 clamp(78px,24vw,300px)/.82 var(--ft);letter-spacing:-.05em;color:var(--fachada);overflow:clip;height:.86em;margin-bottom:8px}
+.hb-hora{display:inline-block;transition:transform .5s var(--ease),opacity .5s}
+.hb-hora.sale{transform:translateY(-60%);opacity:0}
+.hb-hora.entra{transform:translateY(60%);opacity:0;transition:none}
+.hb-momento{min-height:154px}
+.hb-tit{margin:0;font:900 clamp(34px,8.6vw,76px)/1 var(--ft);letter-spacing:-.025em}
+.hb-sub{margin:12px 0 0;max-width:34ch;font-size:18px;line-height:1.5}
+.hb-txt .ctas{margin-top:20px}
+.hb-horas{position:absolute;z-index:3;left:var(--pad);right:var(--pad);bottom:calc(26px + env(safe-area-inset-bottom));display:flex;gap:6px;margin:0;padding:0;list-style:none;font-size:0}
+.hb-horas li{flex:1;height:4px;background:rgba(242,237,224,.3)}
+.hb-horas li.on{background:var(--cal)}
+.hb-horas li span{display:none}
+@media (min-width:768px){
+  .hb-txt{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);align-items:end;gap:0 56px;padding-bottom:56px;right:200px}
+  .hb-txt .kicker,.hb-reloj{grid-column:1/-1}
+  .hb-reloj{font-size:clamp(150px,17vw,280px)}
+  .hb-momento{min-height:0}
+  .hb-txt .ctas{justify-content:flex-start;margin-top:0}
+  .hb-horas{left:auto;right:var(--pad);bottom:56px;flex-direction:column;gap:14px;font-size:15px;width:150px}
+  .hb-horas li{height:auto;background:none;padding:6px 0 6px 16px;border-left:3px solid rgba(242,237,224,.3);color:rgba(242,237,224,.75);font-weight:600}
+  .hb-horas li span{display:block;font:900 22px/1.1 var(--ft);color:var(--cal)}
+  .hb-horas li.on{background:none;border-color:var(--fachada);color:var(--cal)}
+  .hb-velo{background:linear-gradient(180deg,rgba(24,36,16,.5) 0%,rgba(24,36,16,0) 18%,rgba(24,36,16,.2) 34%,rgba(24,36,16,.9) 60%,rgba(24,36,16,.97))}
+}
+
+/* ---------- WOW · la casona ---------- */
+.casona{padding:var(--aire) var(--pad);background:var(--cal);overflow:clip}
+.casona__cab{max-width:760px;margin:0 auto 18px;text-align:center}
+.casona__cab .kicker{justify-content:center}
+.casona__cab h2{margin:0;font:900 clamp(40px,7.4vw,96px)/.98 var(--ft);letter-spacing:-.03em;color:var(--enred)}
+.casona__cab p:last-child{margin:18px auto 0;max-width:36ch;color:var(--gris);font-size:18px}
+.escena{position:relative;max-width:1320px;margin:0 auto;display:grid;grid-template-columns:minmax(0,1fr);gap:18px;justify-items:center}
+.escena__casa{position:relative;width:min(100%,620px);margin-inline:calc(var(--pad) * -.5)}
+.casa{display:block;width:100%;height:auto;overflow:visible}
+.parte{cursor:pointer;outline:none}
+.parte .luz{fill:#FFC86B;opacity:0;mix-blend-mode:screen;transition:opacity .35s}
+.parte image{transition:filter .35s}
+.escena.elegido .parte:not(.on) image{filter:saturate(.35) brightness(.7)}
+.parte.on .luz{opacity:.28}
+@media (hover:hover){.parte:hover .luz{opacity:.22}}
+.parte:focus-visible{outline:none}
+.parte:focus-visible .luz{opacity:.3}
+.sombrilla{transform-box:fill-box;transform-origin:50% 100%;transition:transform .5s var(--brote)}
+@media (hover:hover){.parte[data-parte=vereda]:hover .sombrilla{transform:rotate(-2deg) translateY(-6px)}}
+.parte[data-parte=vereda].on .sombrilla{transform:translateY(-8px)}
+.humo circle{animation:humo 3.2s ease-in infinite;transform-box:fill-box;transform-origin:center}
+.humo circle:nth-child(2){animation-delay:1s}.humo circle:nth-child(3){animation-delay:2s}
+@keyframes humo{0%{opacity:0;transform:translateY(20px) scale(.6)}30%{opacity:.9}100%{opacity:0;transform:translateY(-30px) scale(1.4)}}
+.cartel{transform-box:fill-box;transform-origin:50% 0;animation:mece 4.4s ease-in-out infinite alternate}
+.enredadera use{transform-box:fill-box;transform-origin:50% 90%}
+.pistas{position:absolute;inset:0;pointer-events:none}
+.pistas span{position:absolute;left:var(--x);top:var(--y);width:18px;height:18px;margin:-9px;border-radius:50%;background:var(--cal);box-shadow:0 0 0 3px var(--corten);transition:opacity .3s}
+.pistas span::after{content:"";position:absolute;inset:-8px;border-radius:50%;border:2px solid var(--cal);animation:pulso 2s var(--ease) infinite}
+.escena.elegido .pistas span{opacity:0}
+@keyframes pulso{from{transform:scale(.6);opacity:1}to{transform:scale(1.6);opacity:0}}
+
+/* la pizarra de vereda (tamaño fijo) */
+.pizarra{position:relative;width:min(100%,400px);z-index:2}
+.pizarra__marco{height:var(--pz-h,500px);display:grid;grid-template-rows:146px 1fr;grid-template-columns:minmax(0,1fr);background:var(--pizarra);border:12px solid var(--madera);color:var(--cal);box-shadow:0 18px 40px rgba(30,25,15,.22);overflow:hidden}
+.pizarra__patas{display:flex;justify-content:space-between;padding:0 30px}
+.pizarra__patas i{width:12px;height:30px;background:var(--madera)}
+.pz-foto{position:relative;overflow:hidden;background:#2a3125}
+.pz-foto img{width:100%;height:100%;object-fit:cover;transition:opacity .3s,transform .6s var(--ease)}
+.pz-foto img.cambia{opacity:0;transform:scale(1.06)}
+.pz-cuerpo{display:flex;flex-direction:column;padding:18px 22px 22px;min-height:0;min-width:0}
+.pz-kicker{margin:0 0 4px;font:italic 400 20px/1.2 var(--fs);color:var(--fachada)}
+.pz-tit{margin:0;font:800 25px/1.12 var(--ft);letter-spacing:-.015em;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:2.24em}
+.pz-txt{margin:10px 0 0;font-size:16px;line-height:1.5;color:#DCD6C6;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;min-height:4.5em}
+.pz-dato{margin:10px 0 0;font:600 14px/1.4 var(--fb);color:var(--cal);letter-spacing:.02em;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:2.8em}
+.pz-cta{margin-top:auto;padding-top:14px}
+.pz-cuerpo>*{transition:opacity .25s,transform .35s var(--ease)}
+.pizarra.cambia .pz-cuerpo>*{opacity:0;transform:translateY(8px)}
+.pizarra.cambia .pz-cuerpo>*:nth-child(2){transition-delay:.03s}
+@media (min-width:900px){
+  .casona{padding-block:40px clamp(56px,6vw,96px)}
+  .escena{grid-template-columns:minmax(0,1fr) 380px;grid-template-rows:auto auto;grid-template-areas:"cab cab" "casa piz";align-items:end;gap:20px clamp(28px,4vw,64px)}
+  .casona__cab{grid-area:cab;display:grid;grid-template-columns:auto minmax(0,1fr);align-items:end;gap:6px 48px;text-align:left;margin:0;max-width:none;width:100%}
+  .casona__cab .kicker{grid-column:1/-1;justify-content:flex-start;margin-bottom:6px}
+  .casona__cab h2{font-size:clamp(44px,4.6vw,68px);white-space:nowrap}
+  .casona__cab p:last-child{margin:0 0 8px;font-size:17px;justify-self:end;text-align:right;max-width:30ch}
+  .escena__casa{grid-area:casa;width:100%;max-width:calc((100svh - 250px) * 1000 / 860);margin:0;justify-self:center}
+  .pizarra{grid-area:piz}
+  .pizarra{width:380px;margin-bottom:calc(var(--sh,1) * 2px)}
+  .pizarra__marco{--pz-h:clamp(400px,calc(100svh - 300px),490px);grid-template-rows:minmax(90px,1fr) auto}
+  .pz-cuerpo{min-height:300px}
+}
+@media (max-width:899px){.pz-cta .chapa{width:100%;justify-content:space-between}}
+
+/* ---------- pie ---------- */
+.pie{background:var(--enred);color:var(--cal);padding:72px var(--pad) calc(36px + env(safe-area-inset-bottom))}
+.pie__in{max-width:1240px;margin:0 auto;display:grid;gap:14px;justify-items:start}
+.pie__logo{display:block;width:120px;color:var(--cal)}
+.pie__logo svg{width:100%;height:auto}
+.pie p{margin:0;color:var(--cal2)}
+.credito{font-size:14px;margin-top:22px!important;color:#C9C4B2!important}
+.credito a{color:var(--cal)}
+
+/* ---------- firma de movimiento: brota ---------- */
+.rv{opacity:0;transform:scale(.86) rotate(-3deg);transform-origin:0 100%;transition:opacity .6s var(--ease),transform .8s var(--brote)}
+.rv.visto{opacity:1;transform:none}
+
+/* ---------- intro ---------- */
+.intro-marca{display:none}
+html.con-intro{overflow:hidden}
+html.con-intro body{overflow:hidden}
+html.con-intro .intro-marca{display:grid;place-items:center;position:fixed;inset:0;z-index:80;pointer-events:none}
+.intro-marca__logo{width:min(56vw,280px);color:var(--cal);transition:transform .7s var(--ease),opacity .4s}
+.intro-marca__logo svg{width:100%;height:auto;display:block}
+html.con-intro .intro-marca .lg-arco,html.con-intro .intro-marca .lg-barra,html.con-intro .intro-marca .lg-puerta{stroke-dasharray:420;stroke-dashoffset:420;animation:trazo .55s var(--ease) .1s forwards}
+html.con-intro .intro-marca .lg-barra{animation-delay:.25s}
+html.con-intro .intro-marca .lg-nombre,html.con-intro .intro-marca .lg-bajada{opacity:0;transform:translateY(14px);animation:sube .45s var(--ease) .3s forwards}
+html.con-intro .intro-marca .lg-bajada{animation-delay:.42s}
+@keyframes trazo{to{stroke-dashoffset:0}}
+@keyframes sube{to{opacity:1;transform:none}}
+html.con-intro .nav{opacity:0}
+.nav{transition:opacity .5s}
+html.con-intro .ha-base,html.con-intro .hb-velo{-webkit-mask-size:0 0;mask-size:0 0}
+html.con-intro .ha-base{-webkit-mask:none;mask:none}
+html.con-intro .h{transform:translate(var(--x),var(--y)) rotate(calc(var(--r) - 40deg)) scale(0);transition:transform .55s var(--brote) var(--d,0s)}
+html.con-intro.brotar .h{transform:translate(var(--x),var(--y)) rotate(var(--r)) scale(var(--s,1))}
+html.con-intro.abrir .h.tapa{transform:translate(calc(var(--x) + var(--ox)),calc(var(--y) + var(--oy))) rotate(calc(var(--r) + 90deg)) scale(0);transition:transform .6s var(--ease) var(--d2,0s)}
+html.con-intro.abrir .ha-base{-webkit-mask:radial-gradient(var(--hw) var(--hh) at var(--hx) var(--hy),transparent 92%,#000 95%);mask:radial-gradient(var(--hw) var(--hh) at var(--hx) var(--hy),transparent 92%,#000 95%)}
+html.con-intro .ha-foto img{transform:scale(1.12);transition:transform 1.4s var(--ease)}
+html.con-intro.abrir .ha-foto img{transform:scale(1)}
+html.con-intro.vuela .intro-marca__logo{opacity:0}
+html.con-intro .ha-txt .kicker,html.con-intro .ha-sub,html.con-intro .ha-txt .ctas,html.con-intro .hb-txt>*:not(.hb-reloj){opacity:0;transform:scale(.9) rotate(-2deg);transform-origin:0 100%}
+html.con-intro .ln>span{transform:translateY(118%)}
+.ha-txt .kicker,.ha-sub,.ctas,.ln>span,.hb-txt>*{transition:opacity .55s var(--ease) var(--e,0s),transform .7s var(--brote) var(--e,0s)}
+html.con-intro.texto .ha-txt .kicker,html.con-intro.texto .ha-sub,html.con-intro.texto .ctas,html.con-intro.texto .hb-txt>*:not(.hb-reloj){opacity:1;transform:none}
+html.con-intro.texto .ln>span{transform:none}
+html:not(.con-intro) .hb .h{transition:transform .35s var(--ease)}
+.h.tapa{display:none}
+html.con-intro .h.tapa{display:block}
+/* seguro anti-trabas: sin JS la intro igual se va */
+@keyframes fuera{to{visibility:hidden;opacity:0}}
+html.con-intro .intro-marca{animation:fuera .01s 4.6s forwards}
+
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}.rv{opacity:1;transform:none}}
+.hb-velo{z-index:1}.hb .hojas{z-index:2}
+html.con-intro .hb-pin::after{content:"";position:absolute;inset:0;z-index:1;background:var(--enred2);transition:opacity .7s var(--ease)}
+html.con-intro.abrir .hb-pin::after{opacity:0}
+.ha-base{z-index:1}.ha .hojas{z-index:2}
+html.hero-b .intro-marca{place-items:start center;padding-top:16svh}
+html.menu-abierto .nav{z-index:70}
+
+/* ================= web completa ================= */
+html{scroll-padding-top:84px}
+.nav-links{display:none}
+@media (min-width:1100px){
+  .nav-links{display:flex;gap:4px;background:var(--cal);padding:4px;border-radius:2px}
+  .nav-links a{display:inline-flex;align-items:center;min-height:40px;padding:0 14px;font:700 15px/1 var(--fb);text-decoration:none;color:var(--tinta);background:linear-gradient(var(--fachada),var(--fachada)) center bottom 8px/0 2px no-repeat;transition:background-size .35s var(--ease)}
+  .nav-links a:hover{background-size:calc(100% - 28px) 2px}
+  .nav-menu{display:none}
+}
+.kicker--cal{color:var(--fachada)}
+.boton-linea{display:inline-flex;align-items:center;min-height:52px;padding:0 22px;border:2px solid var(--enred);border-radius:2px;color:var(--enred);font:700 16px/1 var(--fb);text-decoration:none;transition:background .3s,color .3s}
+@media (hover:hover){.boton-linea:hover{background:var(--enred);color:var(--cal)}}
+.raya--osc{color:var(--cal)}
+section h2{margin:0;font:900 clamp(40px,7.4vw,92px)/.98 var(--ft);letter-spacing:-.03em;color:var(--enred)}
+section header p:not(.kicker),.casa-sec__txt>p:not(.kicker){margin:16px 0 0;max-width:46ch;color:var(--gris);font-size:18px}
+
+/* ---- la pizarra del chef ---- */
+.carta{background:var(--enred2);color:var(--cal);padding:var(--aire) var(--pad);overflow:clip}
+.carta__in{max-width:1240px;margin:0 auto}
+.carta__cab{margin-bottom:clamp(32px,4vw,56px)}
+.carta__cab h2{color:var(--cal)}
+.carta__cab p:not(.kicker){color:#CFCABA}
+.tablero__marco{position:relative;display:grid;grid-template-columns:minmax(0,1fr);background:var(--pizarra);border:14px solid var(--madera);box-shadow:inset 0 0 0 1px rgba(255,255,255,.04),0 24px 50px rgba(0,0,0,.3);padding:clamp(18px,3vw,40px)}
+.tablero__carta{min-height:0}
+.tablero__carta .kit-tabs{display:flex;flex-wrap:wrap;gap:4px 6px;margin:0 0 22px;padding:0 0 14px;border-bottom:1.5px dashed rgba(242,237,224,.25)}
+.tablero__carta .kit-tab{min-height:44px;padding:0 14px;border:0;border-radius:2px;background:transparent;color:#CFCABA;font:800 17px/1 var(--ft);letter-spacing:-.01em}
+.tablero__carta .kit-tab.is-on{background:var(--cal);color:var(--pizarra)}
+.tablero__carta .kit-carta__panel{display:grid;grid-template-columns:minmax(0,1fr);gap:0}
+.tablero__carta .kit-item{display:block;padding:12px 0;border:0;border-bottom:1px solid rgba(242,237,224,.09);background:none;animation:tiza .45s var(--ease) both;animation-delay:calc(var(--i) * 35ms)}
+@keyframes tiza{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.pl{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:baseline;gap:4px 12px}
+.pl__nom{display:flex;align-items:baseline;gap:10px;min-width:0;margin:0;font:700 18px/1.3 var(--fb);color:var(--cal)}
+.pl__nom::after{content:"";flex:1;min-width:16px;border-bottom:2px dotted rgba(242,237,224,.3);transform:translateY(-4px)}
+.pl__precio{font:800 18px/1.3 var(--ft);color:var(--fachada);white-space:nowrap}
+.pl__desc{grid-column:1/-1;margin:2px 0 0;font-size:15px;line-height:1.45;color:#BDB8A8}
+.pl__tags{display:inline-flex;gap:6px;align-items:center}
+.pl__casa{display:inline-flex;align-items:center;padding:3px 8px;border:1.5px solid var(--fachada);color:var(--fachada);font:700 11px/1 var(--fb);letter-spacing:.08em;text-transform:uppercase;border-radius:2px;white-space:nowrap}
+.pl__foto{display:inline-flex;align-items:center;gap:6px;min-height:32px;padding:0 10px;margin-left:2px;border:0;border-radius:999px;background:rgba(242,237,224,.12);color:var(--cal);font:600 13px/1 var(--fb);white-space:nowrap}
+.pl__foto::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--fachada)}
+.tablero__foto{display:none}
+.tablero__pie{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:12px 28px;margin-top:22px;color:#CFCABA;font-size:15px}
+.tablero__pie p{margin:0}
+/* foto del plato en el celu: hoja que se abre */
+.foto-pop{position:fixed;inset:0;z-index:90;display:grid;place-items:center;padding:24px;background:rgba(12,18,8,.72)}
+.foto-pop figure{margin:0;width:min(100%,420px);background:var(--cal);padding:10px 10px 14px;box-shadow:0 20px 50px rgba(0,0,0,.4);animation:brota .45s var(--brote)}
+.foto-pop img{width:100%;aspect-ratio:1;object-fit:cover}
+.foto-pop figcaption{margin-top:10px;font:800 18px/1.2 var(--ft);color:var(--tinta)}
+.foto-pop button{position:absolute;top:18px;right:18px;width:48px;height:48px;border:0;border-radius:50%;background:var(--cal);font:700 22px/1 var(--fb)}
+@keyframes brota{from{opacity:0;transform:scale(.8) rotate(-4deg);transform-origin:0 100%}to{opacity:1;transform:none}}
+@media (min-width:900px){
+  .tablero__marco{grid-template-columns:minmax(0,1fr) 300px;gap:0 40px}
+  .tablero__carta .kit-carta__panel{grid-template-columns:repeat(2,minmax(0,1fr));gap:0 36px}
+  .tablero__foto{display:block;position:relative;margin:0;align-self:start;position:sticky;top:110px}
+  .tablero__foto img{width:100%;aspect-ratio:1;object-fit:cover;background:#2a3125;opacity:0;transform:rotate(-2deg) scale(.96);transition:opacity .3s,transform .5s var(--brote)}
+  .tablero__foto.on img{opacity:1;transform:rotate(-2deg)}
+  .tablero__foto figcaption{margin-top:14px;font:italic 400 20px/1.3 var(--fs);color:var(--fachada);min-height:1.3em}
+  .pl__foto{pointer-events:none}
+}
+@media (min-width:1100px){.tablero__marco{grid-template-columns:minmax(0,1fr) 340px}}
+
+/* ---- catas ---- */
+.catas{padding:var(--aire) var(--pad);background:var(--cal);overflow:clip}
+.catas__in{max-width:1240px;margin:0 auto;display:grid;gap:36px}
+.catas__foto{margin:0;position:relative}
+.catas__foto img{width:100%;height:auto;aspect-ratio:1;object-fit:cover;border-radius:2px}
+.agenda{list-style:none;margin:28px 0 0;padding:0;display:grid;gap:14px}
+.ev{position:relative;display:grid;grid-template-columns:86px minmax(0,1fr);gap:0 18px;align-items:center;padding:16px 18px 16px 16px;background:var(--corten);color:var(--cal);min-height:118px}
+.ev::before,.ev::after{content:"";position:absolute;top:10px;width:6px;height:6px;border-radius:50%;background:rgba(242,237,224,.5)}
+.ev::before{left:10px}.ev::after{right:10px}
+.ev--sk{background:linear-gradient(90deg,#E4DCC8,#EEE7D6,#E4DCC8);background-size:200% 100%;animation:sk 1.2s linear infinite}
+@keyframes sk{to{background-position:-200% 0}}
+.ev__fecha{display:grid;justify-items:center;padding:8px 0;border-right:1.5px solid rgba(242,237,224,.3)}
+.ev__dia{font:900 44px/1 var(--ft);letter-spacing:-.03em}
+.ev__mes{font:700 13px/1.2 var(--fb);letter-spacing:.14em;text-transform:uppercase}
+.ev__info{min-width:0}
+.ev__tipo{margin:0;font:italic 400 17px/1.2 var(--fs);color:#F3D9C6}
+.ev__nom{margin:2px 0 4px;font:800 21px/1.15 var(--ft);letter-spacing:-.01em}
+.ev__dato{margin:0;font-size:14px;color:#F1E3D6}
+.ev__btn{grid-column:2;justify-self:start;margin-top:10px;min-height:44px;padding:0 16px;border:0;border-radius:2px;background:var(--cal);color:var(--tinta);font:700 15px/1 var(--fb)}
+@media (hover:hover){.ev__btn:hover{background:#fff}}
+.agenda__nota{margin:14px 0 0;font-size:14px;color:#6A6A60}
+@media (min-width:900px){
+  .catas__in{grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:clamp(40px,6vw,96px);align-items:center}
+  .catas__foto img{aspect-ratio:auto}
+  .ev{grid-template-columns:96px minmax(0,1fr) auto;padding:18px 22px}
+  .ev__btn{grid-column:3;grid-row:1;margin:0;align-self:center}
+}
+
+/* ---- Julián y la casa ---- */
+.casa-sec{padding:var(--aire) var(--pad);background:var(--fachada);overflow:clip}
+.casa-sec__in{max-width:1240px;margin:0 auto;display:grid;gap:40px}
+.casa-sec__foto{position:relative;margin:0;aspect-ratio:1;overflow:hidden}
+.casa-sec__foto img{width:100%;height:100%;object-fit:cover}
+.casa-sec .kicker--osc{color:var(--enred2)}
+.casa-sec__txt>p:not(.kicker){color:#22301A}
+.sellos{list-style:none;margin:28px 0 0;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}
+.sellos li{display:grid;gap:2px;padding:16px 18px;background:var(--enred2);color:var(--cal)}
+.sellos b{font:800 20px/1.15 var(--ft)}
+.sellos span{font-size:14px;color:#CFCABA}
+@media (min-width:900px){.casa-sec__in{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(40px,6vw,96px);align-items:center}}
+
+/* ---- reseñas ---- */
+.resenas{padding:var(--aire) var(--pad);background:var(--cal)}
+.resenas__in{max-width:1240px;margin:0 auto}
+.hojas-resena{list-style:none;margin:36px 0 0;padding:0;display:grid;gap:18px}
+.resena{position:relative;display:flex;flex-direction:column;gap:12px;padding:26px 26px 24px;background:#fff;border-top:6px solid var(--hoja)}
+.resena:nth-child(2){border-color:var(--corten)}.resena:nth-child(3){border-color:var(--fachada)}
+.resena__nota{display:flex;align-items:center;gap:10px;margin:0;font:800 17px/1 var(--ft);color:var(--enred)}
+.est{display:inline-flex;gap:2px;color:#E0A526}
+.est svg{width:20px;height:20px;fill:currentColor}
+.resena blockquote{margin:0;font:400 19px/1.5 var(--fb);color:var(--tinta)}
+.resena__quien{margin:auto 0 0;font-size:14px;color:#5A5A52}
+@media (min-width:900px){.hojas-resena{grid-template-columns:repeat(3,minmax(0,1fr));gap:24px}.resena:nth-child(2){transform:translateY(24px)}}
+
+/* ---- cómo llegar ---- */
+.llegar{padding:var(--aire) var(--pad);background:var(--cal2)}
+.llegar__in{max-width:1240px;margin:0 auto;display:grid;gap:36px}
+.llegar__mapa{position:relative;min-height:380px;height:58svh;max-height:560px;background:#D9D0BC;border:10px solid #fff;box-shadow:0 18px 40px rgba(30,25,15,.14)}
+.llegar__mapa iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.llegar__pin{position:absolute;left:50%;top:50%;width:64px;padding:12px 8px 8px;transform:translate(-50%,-115%);background:var(--corten);color:var(--cal);pointer-events:none;box-shadow:0 8px 18px rgba(0,0,0,.3)}
+.llegar__pin::after{content:"";position:absolute;left:50%;bottom:-10px;transform:translateX(-50%);border:10px solid transparent;border-top-color:var(--corten);border-bottom:0}
+.llegar__pin svg{width:100%;height:auto;display:block}
+.llegar__dir{margin:14px 0 0;display:flex;flex-wrap:wrap;align-items:center;gap:10px 14px;font-size:18px;color:var(--gris)}
+.estado--osc{background:var(--enred);color:var(--cal)}
+.horas{margin:24px 0 0;display:grid;gap:0}
+.horas div{display:flex;justify-content:space-between;gap:16px;padding:13px 0;border-bottom:1.5px solid #CFC6AF;font-size:18px}
+.horas dt{font-weight:600}.horas dd{margin:0;font-weight:700;color:var(--enred)}
+.horas div.hoy dt::after{content:"hoy";margin-left:10px;padding:3px 8px;background:var(--fachada);color:var(--tinta);font:700 12px/1 var(--fb);letter-spacing:.06em;text-transform:uppercase;vertical-align:2px}
+.llegar__btns{display:flex;flex-wrap:wrap;gap:12px;margin-top:28px}
+@media (min-width:900px){.llegar__in{grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:clamp(40px,5vw,80px);align-items:center}.llegar__mapa{height:min(70svh,600px)}}
+
+/* ---- pie ---- */
+.pie{position:relative;overflow:clip}
+.hojas--pie{opacity:.35}
+.pie__in{position:relative}
+.pie__cols{display:grid;gap:18px}
+.pie__cols p{line-height:1.7}
+.pie a{color:var(--cal)}
+@media (min-width:768px){.pie__cols{grid-template-columns:repeat(2,minmax(0,auto));gap:60px}}
+
+/* ---- kit con la identidad ---- */
+.kit-pop .kit-btn--primary,.kit-btn--primary{border-radius:2px}
+.kit-chip{border-radius:2px}
+.tablero__ayuda{margin:8px 0 0;font-size:14px;color:#9F9A8A}
+.kit-demo-pill{transition:opacity .3s,transform .3s}
+html.sin-pill .kit-demo-pill,html.menu-abierto .kit-demo-pill{opacity:0!important;pointer-events:none;transform:translateY(12px)}
+@media (min-width:900px) and (max-height:800px){
+  .pz-cuerpo{min-height:268px;padding-top:14px}
+  .pz-txt{-webkit-line-clamp:2;min-height:3em}
+  .casona__cab h2{font-size:44px}
+}
+@media (max-width:899px){
+  .pl__foto{min-height:44px;padding:0 14px;margin-top:4px}
+  .catas__txt{display:contents}
+  .catas__in>.catas__foto,.catas__txt>*{min-width:0}
+  .catas__txt>header{order:1}.catas__foto{order:2}.agenda{order:3;margin-top:0}.agenda__nota{order:4;margin-top:-22px}
+  .casa-sec__txt{order:-1}
+  .llegar__txt{order:-1}
+}
+@media (max-width:899px){
+  .casa-sec__txt{display:contents}
+  .casa-sec__txt>.kicker,.casa-sec__txt>h2,.casa-sec__txt>p{order:-2}
+  .casa-sec__txt>h2{margin-top:-24px}.casa-sec__txt>p:not(.kicker){margin-top:-20px}
+  .casa-sec__foto{order:-1}
+  .sellos{order:0;margin-top:0}
+}
